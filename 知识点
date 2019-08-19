@@ -19,8 +19,8 @@
 4.javascript
 	面向对象三个特征： 封装，继承和多态
 	事件三个阶段：捕获、目标和冒泡
-	事件冒泡：绑定的事件从最里层的元素开始触发，然后冒泡到最外层
-	事件捕获：绑定的事件从最外层的元素开始触发，然后传到最里层
+	事件冒泡：绑定的事件从最里层的元素开始触发，然后冒泡到最外层(addEventListener('click', fn, false))
+	事件捕获：绑定的事件从最外层的元素开始触发，然后传到最里层(addEventListener('click', fn, true))
     1)事件委托：一般是无法给新创建的元素绑定事件，此时利用冒泡的特性，采用事件委托
     原理：1.冒泡   2.dom的遍历
      click，mousedown，mouseup，keydown，keyup，keypress适合用事件委托
@@ -28,6 +28,7 @@
     优点：减少事件注册，节省内存；简化了dom节点更新时，相应事件的更新
     2)闭包：简单说一个函数引用另一个函数的变量  可以理解成定义在一个函数内部的函数
     特点：可获取函数内部的变量，也可将这些变量一直保存在内存中
+	dom0级事件 比如onclick事件， 多个事件只会执行最后一个；dom2级 addEventListener事件，多个事件按顺序依次往下执行
 
 5.cookie和token   存储web页面的用户信息
 	因为http是没有状态的，所以需要一个标志来对用户身份进行验证
@@ -61,8 +62,9 @@
 
 5.跨域(jsonp, proxy, CORS)(协议，域名，端口不同)
 	1)原因：浏览器的同源策略，针对接口请求和dom查询
-	2)jsonp: 只能发get请求
-	3)CORS：支持所有类型的请求 W3C为浏览器制定的可以跨域通信的规范，分简单请求和非简单请求两个
+	2)jsonp: 只能发get请求,一些特殊标签不存在跨域，比如script,img,link等,jsonp利用script的src来实现跨域，
+	jquery封装了jsonp, $.ajax的dataType属性设为'jsonp' ===> $.getJSON(url,data,success(data,status,xhr))
+	3)CORS：支持所有类型的请求 W3C为浏览器制定的可以跨域通信的规范，分简单请求和非简单请求两个 ie浏览器不能低于ie10
 	4)proxy: 服务器代理
 
 6.事件监听
@@ -75,3 +77,5 @@
   		   3xx： 重定向 要完成请求必须要进行进一步的处理
   		   4xx： 客户端错误     5xx： 服务端错误
   cookies将状态保存在客户端，session将状态保存在服务端
+
+8.ifram

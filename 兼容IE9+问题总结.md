@@ -4,6 +4,10 @@
 当项目需要兼容IE，但是此时又开发了较多功能时，可以不改变原有代码，增加一个专门的 `css` 文件，做专门针对IE的样式修改，并在 `html` 的 `head` 中增加一行代码
 <!--[if IE]><link rel="stylesheet" href="样式文件地址"><![endif]-->
 
+增加必要的polyfills.js
+
+以及在babel配置文件增加presets: [ [ '@vue/app', { loose: true, useBuiltIns: 'entry' } ] ]
+
 兼容IE具体操作
 
 1. `transform`: 只能用于2D的转换，且必须加前缀 `-ms-` (ie9)
