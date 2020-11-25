@@ -1,9 +1,7 @@
 准备阶段
-1.spa和mpa
-	1)spa：一个外壳页面和多个页面片段构成 页面片段刷新 在一个页面上，传递数据较为简单
-	2)mpa: 多个页面构成，不需重新加载，跳转后公共资源要重新加载，整页刷新 数据传递：依赖cookies和localstroge和URL，实现麻烦，加载慢，不流畅，用户体验差
-
-2.模块间的通信方法
+1. cookies, localstorage, sessionstorage 区别
+2. vuex store, mutation, action, getter使用
+3.模块间的通信方法
 	1）通过路由带参数进行传值 如组件A可以通过query把值传给组件B
 	2）通过设置session storage缓存的形式进行传递 A组件设置缓存B组件获取到A设置的缓存
 	3）父子组件：父组件通过props向子组件传数据。子组件通过$emit事件向父组件传递
@@ -11,6 +9,14 @@
 	5）不同组件：vuex(大型单页面应用)专为vue开发的状态管理模式(state, Getter, Mutation, Action, Module)
 	vuex状态存储是响应式的，所以用状态在计算属性里用，触发状态变化是在 methods 中提交 mutation
 	简单说通过action处理数据，然后通过mutation 把处理后(state)中,要用就通过getter从(state)中取。
+4. 跨域
+
+
+
+1.spa和mpa
+	1)spa：一个外壳页面和多个页面片段构成 页面片段刷新 在一个页面上，传递数据较为简单
+	2)mpa: 多个页面构成，不需重新加载，跳转后公共资源要重新加载，整页刷新 数据传递：依赖cookies和localstroge和URL，实现麻烦，加载慢，不流畅，用户体验差
+
 
 3.html, jade(pug)
 	1)jade: 可移植性差,调试困难,性能不出色,不过可以加快开发效率 a: img表示内联式=> <a><img/></a>

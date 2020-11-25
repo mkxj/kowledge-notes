@@ -5,3 +5,28 @@
 切图： ps选择切片工具，选中要切的图片后，文件选择存储为web格式，预设选PNG-24
 给图片换颜色  shift+backspace 将前景色设为要换的颜色即可
 5.axios默认是请求的时候不会带上cookie的，设置axios.defaults.withCredentials = true来解决。
+
+箭头函数和普通函数this的指向
+普通函数 1. 谁调用它就指向谁，obj,fn,那么fn内的this指向obj
+        2. 无人调用，this指向window,new的时候指向new出来的对象
+        3. 默认情况下(非严格模式下,未使用 'use strict')，没找到直接调用者，this就指向window
+        4. 在严格模式下，没找到直接调用者，this是undefined
+        5. 使用call,apply,bind，this指向绑定的对象
+
+
+箭头函数 默认指向在定义它时,它所处的对象,而不是执行时的对象, 定义它的时候,可能环境是window（即继承父级的this）
+
+3.	Vue中双向数据绑定是如何实现的？（object.defineProprety() 直接在一个对象上定义一个新属性，或者修改一个已经存在的属性）
+
+vue使用了mvvm这种架构模式，真正的将数据和视图分开了，而不像mvc那种一样，表面看数据和试图被分开，但在controler里面还需要手动编写dom操作，没有做到自动化，
+
+vue采用发布订阅模式和数据劫持相结合实现了双向数据绑定，通过Object.defineProperty() 这个方法重新定义了对象获取属性值(get)和设置属性值(set)的操作来实现的，在数据变动的时候将消息发布给订阅者，订阅者去做相应处理
+
+详细来说就是首先model层改变以后进行数据劫持，设置一个监听器observer去监听所有的属性(内部核心使用object.defineProprety())，一旦触发setter了就能知道哪个属性改变了,会发通知告诉订阅者watcher,由于订阅者有很多个，所有watcher之前，,watcher告知虚拟dom树，哪个变量发生了改变，然后在虚拟dom树里面通过diff算法生成一颗新的dom树，两颗树进行层层比较，找到不一样的节点，把该节点更新到真实的dom树上，完成视图层改变，
+
+
+
+
+vue 双向数据绑定是通过 数据劫持 结合 发布订阅模式的方式来实现的， 也就是说数据和视图同步，数据发生变化，视图跟着变化，视图变化，数据也随之发生改变；
+核心：关于VUE双向数据绑定，其核心是 Object.defineProperty()方法。
+
