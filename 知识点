@@ -1,6 +1,7 @@
 准备阶段
 1. cookies, localstorage, sessionstorage 区别
-2. vuex store, mutation, action, getter使用
+2. vuex： 状态管理模式，集中式管理存储所有应用组件的状态
+state, mutation, action, getter使用
 3.模块间的通信方法
 	1）通过路由带参数进行传值 如组件A可以通过query把值传给组件B
 	2）通过设置session storage缓存的形式进行传递 A组件设置缓存B组件获取到A设置的缓存
@@ -10,8 +11,126 @@
 	vuex状态存储是响应式的，所以用状态在计算属性里用，触发状态变化是在 methods 中提交 mutation
 	简单说通过action处理数据，然后通过mutation 把处理后(state)中,要用就通过getter从(state)中取。
 4. 跨域
+   浏览器的同源策略：域名，协议，端口号不一致
+   两种攻击方式：接口请求（CSRF跨站请求伪造) 对dom的查询（XSS跨站脚本攻击)
+   1. ngnix代理 （目前用的最多的，原理：实际就是把web项目和后端接口项目放到一个域中，这样就不存在跨域问题，然后根据请求地址去请求不同服务器（真正干活的服务器））
+   2. jsonp（script,img)
+   3. 空iframe加form 解决post
+   4. cors
+
+5. 闭包
+   定义：声明在一个函数中的函数，叫做闭包函数
+   结论：闭包找到的是同一地址中父级函数中对应变量最终的值
+   特点：让外部访问函数内部变量成为可能；局部变量会常驻在内存中；可以避免使用全局变量，防止全局变量污染；会造成内存泄漏（有一块内存空间被长期占用，而不被释放）
+   
+6. vue生命周期
+- beforeCreate 初始化数据之前
+通过依赖注入导入依赖项，开始初始化数据
+- created  组件实例创建完成，属性已绑定，此时DOM还未生成，可以更改数据不经过其它钩子
+在这之间做编译模板，
+- beforeMount 模板编译、挂载之前,在这时还拿不到dom, 虚拟dom创建完成
+编译，并替换了被绑定元素
+- mounted 渲染出真实得dom
+- beforeUpdate 
+beforeUpdate和update的触发点不是数据的改变，而是视图改变
+- update
+- beforeDestroy
+- destroy
+
+7. v-for和v-if不能一起使用，因为v-for的优先级比v-if高，使得每一次的v-for都要执行v-if，不断的进行组件的创建和销毁，影响性能
+
+8. 盒子模型：将网页看成一个盒子，里面有content,padding,border,margin
+两种模式：标准模式 box-sizing: content-box;盒子会被padding撑开 width=width+padding+border+margin
+         怪异模式 box-sizing: border-box;盒子大小不会被padding撑开 width = width + margin
+
+9 微任务和宏任务的执行顺序
+首先执行脚本script是宏任务，执行过程中遇到宏任务加入宏任务队列，遇到微任务加入微任务队列，一个宏任务的完成必须包括内部所有的微任务都执行成功
+
+10. css权重
+行内元素 1000，id选择器 100，属性选择/class/伪类 10，元素/伪元素 1
+
+11. 复合选择器
+id选择器，类选择器，属性选择器，后代选择器，子元素选择器， 相邻兄弟选择器，通用兄弟选择器，交集选择器，并集选择器
+
+12. 清除浮动的方式
+1）额外标签法，在最后一个浮动标签后增加标签，设置样式clear: both  （不推荐，添加了无意义的标签）
+2) 父级添加overflow: hidden （不推荐，无法显示要溢出的元素）
+3) after伪元素清除
+clearfix:after { // ie8以上和其它浏览器兼容，如果是ie6,7的话使用 .clearfix { zoom: 1 } 触发haslayout
+	content: ''; 让伪元素不显示
+	clear: both; css定位属性，规定左右两侧均不能出现浮动元素
+	display: block; 因为clear属性只能在块级元素下起左右，所以需要这一步
+	hight: 0; 
+	visibility: hidden;
+}
+4)使用after和before双伪元素清除浮动
+
+13. BFC,有什么作用
+块级格式化上下文，决定如何渲染元素的容器
+BFC是一个独立的布局环境，其中的元素布局是不受外界的影响，并且在一个BFC中，块盒与行盒（行盒由一行中所有的内联元素所组成）都会垂直的沿着其父元素的边框排列。
+具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。
+触发bfc条件
+根元素或包含根元素的元素，
 
 
+13. var const let的区别
+其实const 和let也声明提升了，但是没有初始化数据
+var：变量声明提升，挂载在window上
+const: 一旦声明以后不能再被赋值,如果是对象，可以修改对象属性，const保证指针不发生改变
+let 在块级作用域内起作用，变量必须在声明以后使用，不汇挂载在window上
+JS中的for循环体比较特殊，每次执行都是一个全新的独立的块作用域
+for (var i = 0; i < 3; i++) {
+	setTimeout(() => {
+		console.log(i)
+	}, 1000)
+}
+
+for (let i = 0; i < 3; i++) {
+	setTimeout(() => {
+		console.log(i)
+	}, 1000)
+}
+
+
+14. vue active-class  route-link的属性，用来做选中样式的切换
+
+15. vue、react、angular的区别
+vue：支持指令，过滤器，双向数据绑定，兼容ie9以及以上，支持jsx语法,支持mixin,不内置ajax,router,vuex等，都是以插件注入的形式
+angular: 支持指令，过滤器，数据双向绑定，1.3以前兼容ie8
+react: 支持jsx语法,mixin,不内置ajax,router,vuex等，都是以插件注入的形式
+vue 不支持ie8以及以下的浏览器，因为vue使用了ie8无法模拟的ES5的特性(Object.defineProperty)，但是支持所有兼容ES5的浏览器
+angular 1.3以后不能支持ie8
+react 0.14x以后不能支持ie8
+
+16. 父子组件如何主动获取数据
+父组件主动：$children 获取到一个数组，但是无法确定子组件的顺序，也不是响应式
+           $refs
+子组件主动：$parent
+props  $emit  
+v-bind="$attrs" 包含了父组件中不作为props被识别的特性绑定，这些未识别的特性可以通过v-bind="$attrs"传递到内部
+v-on="$listeners" 这里是未识别的事件
+
+
+17. keep-alive 对组件缓存，节省性能，是抽象组件，所以不会被渲染成dom元素
+在组件切换过程将状态保留在内存中，防止重复渲染dom,减少加载时间以及性能消耗，提高用户体验性
+
+18. Object.freeze() 方法可以冻结一个对象
+
+19. 模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量。
+
+20. 计算属性缓存和方法的区别：计算属性是基于它们的响应式依赖进行缓存的，只要依赖数据没变，他就不会变，多次执行会直接返回上一次缓存的数据，方法渲染一次就会重新执行一次
+
+21 计算属性和监听属性：数据变化时执行异步操作或者开销较大的操作，需要执行watch
+
+22. v-show和v-if的区别：
+v-if支持template,支持v-else,是真的条件渲染，也是惰性的，如果初始渲染条件为假，那就不会被渲染，直到条件变成真才会被渲染
+v-if不支持template,v-else,初始渲染时就会渲染组件，条件为真或假只是改变样式display: none
+v-if有更高的切换开销，v-show有更高的初始渲染开销，所以频繁的切换建议使用v-show,反之建议使用v-if
+
+23. v-for 遍历对象  v-for="(value(键值), name(键名), index(索引)) in object"
+不加key的时候默认采用就地更新，即便数据项的顺序被改变，也不会移动dom元素来匹配数据项的顺序，而是就地更新每个元素
+
+24. 
 
 1.spa和mpa
 	1)spa：一个外壳页面和多个页面片段构成 页面片段刷新 在一个页面上，传递数据较为简单
